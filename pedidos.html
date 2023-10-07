@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pedidos - Sabores da Mary</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #FFD700, #000);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: white;
+            text-align: center;
+            padding-bottom: 60px; /* Adicione um espaço para o botão 'Apagar Todos' na parte inferior */
+        }
+
+        h1 {
+            background-color: #333;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #000000;
+            position: fixed;
+            top: 0; /* Coloca o elemento no topo */
+            left: 0; /* Deixa o elemento no canto esquerdo */
+            
+        }
+
+        .total-vendas {
+            font-size: 1.2em;
+            margin-right: 20px;
+        }
+
+        #lista-pedidos {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #lista-pedidos li {
+            background-color: #333;
+            margin: 10px;
+            padding: 20px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 90%; /* Defina a largura para 90% da largura da tela */
+            max-width: 400px; /* Defina a largura máxima para evitar que a lista fique muito larga */
+        }
+
+        #lista-pedidos h3 {
+            font-size: 1.8em; /* Aumente o tamanho da fonte do título do pedido */
+            margin-top: 0; /* Remova a margem superior padrão */
+        }
+
+        #lista-pedidos p {
+            font-size: 1.4em; /* Aumente o tamanho da fonte do texto do pedido */
+            margin-bottom: 10px; /* Adicione um espaçamento inferior maior */
+        }
+
+        #lista-pedidos ul li {
+            font-size: 1.4em;
+            margin-bottom: 8px; /* Ajuste o espaçamento entre os itens da lista */
+        }
+
+        #apagar-todos {
+            background-color: #ff0000;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 1.4em; /* Aumente o tamanho da fonte */
+            margin-top: 20px; /* Aumente o espaço superior para melhorar a acessibilidade */
+            width: 100%; /* Faça o botão ocupar a largura total do contêiner */
+        }
+
+        #apagar-todos:hover {
+            background-color: #45a049;
+        }
+
+        #concluir-todos {
+            background-color: #009933;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 1.4em; /* Aumente o tamanho da fonte */
+            margin-top: 20px; /* Aumente o espaço superior para melhorar a acessibilidade */
+            width: 100%; /* Faça o botão ocupar a largura total do contêiner */
+        }
+
+        #concluir-todos:hover {
+            background-color: #007a29;
+        }
+
+        #lista-pedidos button.delete {
+            background-color: #FF3333;
+        }
+
+        #lista-pedidos button.completed {
+            background-color: #009933;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="header">
+        <h1>Pedidos</h1>
+        <div class="total-vendas">
+            Total de Vendas: R$ <span id="total-vendas">0.00</span>
+        </div>
+        <button id="apagar-todos">Apagar Todos</button>
+        <button id="concluir-todos">Concluir Todos</button>
+    </div>
+    <ul id="lista-pedidos">
+    </ul>
+
+    <script>
+        // Obter pedidos do localStorage
+        const pedidos = JSON.parse(localStorage.getItem("pedidos")) || [];
+
+        // Exibir os pedidos em ordem de chegada
+        const listaPedidos = document.getElementById("lista-pedidos");
+        const totalVendas = document.getElementById("total-vendas");
+
+        function atualizarTotalVendas() {
+            const total = pedidos.reduce((acc, pedido) => acc + pedido.total, 0);
+            totalVendas.textContent = total.toFixed(2);
+        }
+
+        pedidos.forEach((pedido, index) => {
+            const pedidoItem = document.createElement("li");
+            pedidoItem.innerHTML = `
+                <h3>Pedido ${index + 1}</h3>
+                <p>Cliente: ${pedido.nomeCliente}</p>
+                <p>Total: R$ ${pedido.total.toFixed(2)}</p>
+                <p>Itens Pedidos:</p>
+                <ul>
+                    ${pedido.itens.map(item => `<li>${item.item} - R$ ${item.preco.toFixed(2)}</li>`).join('')}
+                </ul>
+                <button class="edit">Editar</button>
+                <button class="delete">Excluir</button>
+                <button class="completed">Concluído</button>
+            `;
+
+            // Adicionar evento para editar pedido (a ser implementado)
+            pedidoItem.querySelector('.edit').addEventListener('click', () => {
+                alert('Funcionalidade de edição ainda não implementada.');
+            });
+
+            // Adicionar evento para excluir pedido
+            pedidoItem.querySelector('.delete').addEventListener('click', () => {
+                if (confirm('Tem certeza que deseja excluir este pedido?')) {
+                    // Remover o pedido da lista
+                    pedidos.splice(index, 1);
+                    // Atualizar o localStorage
+                    localStorage.setItem("pedidos", JSON.stringify(pedidos));
+                    // Remover o item da lista na interface
+                    listaPedidos.removeChild(pedidoItem);
+                    atualizarTotalVendas();
+                }
+            });
+
+            // Adicionar evento para marcar como concluído
+            pedidoItem.querySelector('.completed').addEventListener('click', () => {
+                pedidoItem.style.backgroundColor = '#009933';
+                pedidoItem.querySelector('.completed').style.display = 'none';
+                atualizarTotalVendas();
+            });
+
+            listaPedidos.appendChild(pedidoItem);
+        });
+
+        // Adicionar evento para apagar todos os pedidos
+        document.getElementById("apagar-todos").addEventListener('click', () => {
+            if (confirm('Tem certeza que deseja apagar todos os pedidos?')) {
+                // Limpar pedidos do localStorage
+                localStorage.removeItem("pedidos");
+                // Limpar a lista de pedidos na interface
+                while (listaPedidos.firstChild) {
+                    listaPedidos.removeChild(listaPedidos.firstChild);
+                }
+                // Atualizar o total de vendas
+                totalVendas.textContent = "0.00";
+            }
+        });
+
+        // Adicionar evento para concluir todos os pedidos
+        document.getElementById("concluir-todos").addEventListener('click', () => {
+            pedidos.forEach((pedido, index) => {
+                const pedidoItem = listaPedidos.children[index];
+                pedidoItem.style.backgroundColor = '#009933';
+                pedidoItem.querySelector('.completed').style.display = 'none';
+            });
+            atualizarTotalVendas();
+        });
+
+        atualizarTotalVendas();
+    </script>
+</body>
+</html>

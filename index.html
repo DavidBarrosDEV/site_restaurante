@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Cardápio Online - Sabores da Mary</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #FFD700, #000);
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .categoria {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .categoria h2 {
+            font-size: 2em;
+        }
+
+        .item {
+            width: 300px;
+            border: 1px solid #ccc;
+            margin: 10px;
+            padding: 10px;
+            background-color: white;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .item h3 {
+            font-size: 1.5em;
+        }
+
+        .item p {
+            font-size: 1.2em;
+        }
+
+        .item img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .item button {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+
+        #carrinho {
+            flex: 1;
+            background-color: white;
+            padding: 20px;
+            margin: 10px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+
+        #carrinho h2 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        #carrinho ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        #carrinho li {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        #carrinho button {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1.5em;
+            margin-top: 10px;
+        }
+
+        #mensagem-pedido {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+
+        #mensagem-pedido img {
+            max-width: 100%;
+        }
+
+        /* Estilos para telas menores (dispositivos móveis) */
+        @media screen and (max-width: 767px) {
+            .categoria {
+                flex: 1;
+                padding: 10px;
+                text-align: center;
+            }
+
+            .item {
+                width: 100%;
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Sabores da Mary</h1>
+    </header>
+
+    <div class="container">
+        <div class="categoria" id="pratos">
+            <h2>Pratos</h2>
+            <div class="item">
+                <h3>Feijoada</h3>
+                <img src="img/feijoada.jpg" alt="Feijoada">
+                <p>Arroz, Farofa, Laranja e Couve</p>
+                <p>Preço: R$ 20,00</p>
+                <button onclick="adicionarAoCarrinho('Feijoada', 20)">Adicionar ao Carrinho</button>
+            </div>
+
+            <div class="item">
+                <h3>Carne de Sol</h3>
+                <img src="img/carne_de_sol.jpg" alt="Carne de Sol">
+                <p>Baião, Batatonese e Fatofa</p>
+                <p>Preço: R$ 20,00</p>
+                <button onclick="adicionarAoCarrinho('Carne de Sol', 20)">Adicionar ao Carrinho</button>
+            </div>
+
+            <div class="item">
+                <h3>Fraldinha</h3>
+                <img src="img/fraldinha.jpg" alt="Fraldinha">
+                <p>Baião, Batatonese e Fatofa</p>
+                <p>Preço: R$ 20,00</p>
+                <button onclick="adicionarAoCarrinho('Fraldinha', 20)">Adicionar ao Carrinho</button>
+            </div>
+
+
+
+            <div class="item">
+                <h3>Bisteca</h3>
+                <img src="img/bisteca.jpg" alt="Bisteca">
+                <p>Baião, Batatonese e Fatofa</p>
+                <p>Preço: R$ 20,00</p>
+                <button onclick="adicionarAoCarrinho('Bisteca', 20)">Adicionar ao Carrinho</button>
+            </div>
+
+            <!-- Adicione mais itens de Pratos aqui -->
+        </div>
+
+        <div class="categoria" id="bebidas">
+            <h2>Bebidas</h2>
+            <div class="item">
+                <h3>Coca em Lata</h3>
+                <img src="img/coca.jpg" alt="Coca em Lata">
+                <p>350</p>
+                <p>Preço: R$ 5,00</p>
+                <button onclick="adicionarAoCarrinho('Coca em Lata', 5)">Adicionar ao Carrinho</button>
+            </div>
+
+            <div class="item">
+                <h3>Guaraná MAGISTRAL Gold Lata </h3>
+                <img src="img/mgold.jpg" alt="Guaraná MAGISTRAL Gold Lata 350mL">
+                <p>350mL</p>
+                <p>Preço: R$ 3,00</p>
+                <button onclick="adicionarAoCarrinho('Guaraná MAGISTRAL Gold Lata 350mL', 3)">Adicionar ao Carrinho</button>
+            </div>
+
+            <!-- Adicione mais itens de Bebidas aqui -->
+        </div>
+
+        <div class="categoria" id="sobremesas">
+            <h2>Sobremesas</h2>
+            <div class="item">
+                <h3>Mousse de Chocolate</h3>
+                <img src="img/mousechoco.jpg" alt="Mousse de Chocolate">
+                <p>Descrição da sobremesa 1.</p>
+                <p>Preço: R$ 3,00</p>
+                <button onclick="adicionarAoCarrinho('Mousse de Chocolate', 3)">Adicionar ao Carrinho</button>
+            </div>
+
+            <div class="item">
+                <h3>Mousse de Cupuaçu</h3>
+                <img src="img/mousecupu.jpg" alt="Mousse de Cupuaçu">
+                <p></p>
+                <p>Preço: R$ 3,00</p>
+                <button onclick="adicionarAoCarrinho('Mousse de Cupuaçu', 3)">Adicionar ao Carrinho</button>
+            </div>
+
+            <!-- Adicione mais itens de Sobremesas aqui -->
+        </div>
+
+        <div id="carrinho">
+            <h2>Carrinho de Compras</h2>
+            <ul id="carrinho-lista"></ul>
+            <button onclick="finalizarPedido()">Finalizar Pedido</button>
+            <button onclick="limparCarrinho()">Limpar Carrinho</button>
+        </div>
+    </div>
+
+    <div id="mensagem-pedido">
+        <img src="pedido_sucesso.jpg" alt="Pedido Feito com Sucesso">
+        <p>Pedido feito com sucesso! Por favor, aguarde.</p>
+    </div>
+
+    <script>
+        let carrinho = [];
+        const carrinhoLista = document.getElementById("carrinho-lista");
+
+        function adicionarAoCarrinho(item, preco) {
+            carrinho.push({ item, preco });
+            atualizarCarrinho();
+        }
+
+        function atualizarCarrinho() {
+            carrinhoLista.innerHTML = "";
+
+            let total = 0;
+            for (const pedido of carrinho) {
+                const itemLi = document.createElement("li");
+                itemLi.innerText = `${pedido.item} - R$ ${pedido.preco.toFixed(2)}`;
+                carrinhoLista.appendChild(itemLi);
+                total += pedido.preco;
+            }
+
+            const totalLi = document.createElement("li");
+            totalLi.innerText = `Total: R$ ${total.toFixed(2)}`;
+            carrinhoLista.appendChild(totalLi);
+        }
+
+        function finalizarPedido() {
+            const nomeCliente = prompt("Por favor, digite seu nome:");
+            
+            if (!nomeCliente) {
+                alert("Por favor, insira seu nome.");
+                return;
+            }
+
+            if (carrinho.length === 0) {
+                alert("Seu carrinho de compras está vazio. Adicione itens antes de finalizar o pedido.");
+                return;
+            }
+
+            const pedido = {
+                nomeCliente: nomeCliente,
+                itens: carrinho,
+                total: calculaTotal()
+            };
+
+            // Obter pedidos anteriores do localStorage (se houver)
+            const pedidosAnteriores = JSON.parse(localStorage.getItem("pedidos")) || [];
+            pedidosAnteriores.push(pedido);
+
+            // Armazenar os pedidos no localStorage
+            localStorage.setItem("pedidos", JSON.stringify(pedidosAnteriores));
+
+            // Mostrar a mensagem de pedido feito com sucesso
+            const mensagemPedido = document.getElementById("mensagem-pedido");
+            mensagemPedido.style.display = "block";
+        }
+
+        // Função para calcular o total do carrinho
+        function calculaTotal() {
+            let total = 0;
+            for (const pedido of carrinho) {
+                total += pedido.preco;
+            }
+            return total;
+        }
+
+        function limparCarrinho() {
+            carrinho = [];
+            atualizarCarrinho();
+        }
+    </script>
+</body>
+</html>
